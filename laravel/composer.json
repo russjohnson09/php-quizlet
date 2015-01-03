@@ -6,7 +6,8 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"zizaco/confide": "~4.1"
+		"zizaco/confide": "~4.1",
+		"phpunit/phpunit": "~4.4"
 	},
 	"autoload": {
 		"classmap": [

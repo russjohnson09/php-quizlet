@@ -1,0 +1,12 @@
+http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7
+
+https://phpunit.de/manual/current/en/installation.html
+
+
+C:\Users\username> cd C:\bin
+C:\bin> echo @php "%~dp0phpunit.phar" %* > phpunit.cmd
+C:\bin> exit
+setx path "%path%;C:\Python27"
+
+
+URLWriter for iis -> public/index.php
