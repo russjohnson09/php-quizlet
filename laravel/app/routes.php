@@ -13,7 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('cards');
 });
 //
 
@@ -21,3 +21,11 @@ Route::get('/authtest', array('before' => 'auth.basic', function()
 {
     return View::make('hello');
 }));
+
+
+//Route::model('card', 'Card');
+
+Route::group(array('prefix' => 'api'), function()
+{
+	Route::resource('card','CardController');
+});

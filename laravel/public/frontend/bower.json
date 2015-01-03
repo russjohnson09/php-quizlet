@@ -1,0 +1,19 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "homepage": "https://github.com/russjohnson09/php-quizlet",
+  "authors": [
+    "russ <russjohnson09@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}
