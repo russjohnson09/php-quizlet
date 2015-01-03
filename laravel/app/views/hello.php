@@ -1,3 +1,17 @@
+<?php
+
+$dsn = 'Server=127.0.0.1:3307;Database=quizlet';
+$user = 'root';
+$password = 'russ';
+
+//$dbh = new PDO($dsn, $user, $password);
+
+//echo phpinfo();
+
+//$results = DB::select('select * from card where id = ?', array(1));
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
