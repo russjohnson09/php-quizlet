@@ -13,7 +13,7 @@ class CardController extends \BaseController {
 	 */
 	public function index()
 	{
-		$this->data['cards'] = $cards = Card::all();
+		$this->data['cards'] = $cards = Card::orderBy('updated_at','desc')->get();
 		return View::make('card.index',$this->data);
 	}
 
@@ -25,7 +25,7 @@ class CardController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		return View::make('card.create',$this->data);
 	}
 
 
@@ -36,7 +36,19 @@ class CardController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$rules = array(
+			'front'       => 'required',
+		);
+        $validator = Validator::make(Input::all(), $rules);
+		
+		if ($validator->fails()) {
+			return Redirect::action('CardController@create')
+				->withErrors($validator);
+        }
+		$card = new Card();
+		$card->front = Input::get('front');
+		$card->save();
+		return Redirect::action('CardController@show', array('card' => $card));
 	}
 
 
@@ -70,11 +82,30 @@ class CardController extends \BaseController {
 	 * Update the specified resource in storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return Response https://scotch.io/tutorials/simple-laravel-crud-with-resource-controllers
 	 */
-	public function update($id)
+	public function update($card)
 	{
-		//
+		$rules = array(
+			'front'       => 'required',
+		);
+        $validator = Validator::make(Input::all(), $rules);
+		
+		if ($validator->fails()) {
+			return Redirect::action('CardController@edit', array('card' => $card))
+				->withErrors($validator);
+            //return Redirect::to('cards/' . $id . '/edit')
+             //   ->withErrors($validator)
+            //    ->withInput(Input::except('password'));
+        } else {
+            // store
+            $card->front       = Input::get('front');
+            $card->save();
+
+            // redirect
+            //Session::flash('message', 'Successfully updated nerd!');
+            return Redirect::action('CardController@show', array('card' => $card));
+        }
 	}
 
 
