@@ -3,6 +3,8 @@
 class CardController extends \BaseController {
 
 	const TITLE = 'Cards';
+	
+	private $data = array('title' => self::TITLE);
 
 	/**
 	 * Display a listing of the resource.
@@ -11,15 +13,8 @@ class CardController extends \BaseController {
 	 */
 	public function index()
 	{
-		$cards = Card::all();
-		return View::make('cards',array('cards' => $cards,'title' => self::TITLE));
-		/*
-		$card = array('id' => 1,'front' => 'front');
-		$status = 200;
-		return Response::json(array('photos' => array(
-								$card,$card
-								)),$status);
-								*/
+		$this->data['cards'] = $cards = Card::all();
+		return View::make('card.index',$this->data);
 	}
 
 
@@ -48,12 +43,13 @@ class CardController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $card
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($card)
 	{
-		return $id;
+		$this->data['card'] = $card;
+		return  View::make('card.show',$this->data);
 	}
 
 
@@ -63,9 +59,10 @@ class CardController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($card)
 	{
-		//
+		$this->data['card'] = $card;
+		return  View::make('card.edit',$this->data);
 	}
 
 
