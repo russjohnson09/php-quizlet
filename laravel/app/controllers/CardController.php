@@ -2,6 +2,8 @@
 
 class CardController extends \BaseController {
 
+	const TITLE = 'Cards';
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -9,11 +11,15 @@ class CardController extends \BaseController {
 	 */
 	public function index()
 	{
+		$cards = Card::all();
+		return View::make('cards',array('cards' => $cards,'title' => self::TITLE));
+		/*
 		$card = array('id' => 1,'front' => 'front');
 		$status = 200;
 		return Response::json(array('photos' => array(
 								$card,$card
 								)),$status);
+								*/
 	}
 
 

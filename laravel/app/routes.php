@@ -22,7 +22,7 @@ Route::get('/authtest', array('before' => 'auth.basic', function()
     return View::make('hello');
 }));
 
-
+Route::resource('card','CardController');
 //Route::model('card', 'Card');
 
 Route::group(array('prefix' => 'api'), function()
