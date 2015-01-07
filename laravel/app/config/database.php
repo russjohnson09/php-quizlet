@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'quizlet',
+	'default' => 'dev',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -45,10 +45,20 @@ return array(
 	*/
 
 	'connections' => array(
-		'quizlet' => array(
+		'dev' => array(
 			'driver'    => 'mysql',
 			'host'      => '127.0.0.1:3307',
-			'database'  => 'quizlet',
+			'database'  => 'dev',
+			'username'  => 'root',
+			'password'  => 'russ',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
+		),
+		'prod' => array(
+			'driver'    => 'mysql',
+			'host'      => '127.0.0.1:3307',
+			'database'  => 'prod',
 			'username'  => 'root',
 			'password'  => 'russ',
 			'charset'   => 'utf8',
