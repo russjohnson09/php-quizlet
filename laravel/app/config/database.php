@@ -1,5 +1,7 @@
 <?php
 
+$v = $_ENV['database'];
+
 return array(
 
 	/*
@@ -26,7 +28,7 @@ return array(
 	|
 	*/
 
-	'default' => 'dev',
+	'default' => $v['default'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,28 +46,8 @@ return array(
 	|
 	*/
 
-	'connections' => array(
-		'dev' => array(
-			'driver'    => 'mysql',
-			'host'      => '127.0.0.1:3307',
-			'database'  => 'dev',
-			'username'  => 'root',
-			'password'  => 'russ',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		),
-		'prod' => array(
-			'driver'    => 'mysql',
-			'host'      => '127.0.0.1:3307',
-			'database'  => 'prod',
-			'username'  => 'root',
-			'password'  => 'russ',
-			'charset'   => 'utf8',
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-		)
-	),
+	'connections' => $v['connections']
+,
 
 	/*
 	|--------------------------------------------------------------------------
