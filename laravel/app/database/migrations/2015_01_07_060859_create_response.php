@@ -12,12 +12,13 @@ class CreateResponse extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('responses',function($t){
+		Schema::create('card_reviews',function($t){
 			$t->increments('id');
 			$t->boolean('correct');
 			$t->integer('card_id')->unsigned();
 			$t->foreign('card_id')->references('id')->on('cards')
 			->onDelete('cascade');
+			$t->timestamp('due_date');
 			$t->timestamps();
 		});
 	}
@@ -29,7 +30,7 @@ class CreateResponse extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('responses');
+		Schema::drop('card_reviews');
 	}
 
 }

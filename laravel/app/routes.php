@@ -2,6 +2,8 @@
 Route::model('card', 'Card');
 Route::resource('card','CardController');
 
+Route::post('card/{card}/review',array('as' => 'card.review','uses' => 'CardController@review'));
+
 Route::model('show', 'Show');
 Route::resource('show','ShowController');
 
