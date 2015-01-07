@@ -1,7 +1,14 @@
 @foreach ($records as $record)
+	<?php $key = $record->getKeyName();?>
+	<?php $record = $record->toArray(); ?>
 	<div class="Record">
-		{{link_to_action("$controller"."@edit",'Edit',$parameters = array($record->id), $attributes = array())}}
-		{{link_to_action("$controller"."@show", 'View', $parameters = array($record->id), $attributes = array())}}
-		<p>This is record {{ $record->id }}</p>
+		<p>This is record {{ $record[$key] }}</p>
+		<table>
+			@foreach ($record as $key => $val)
+				<tr>
+				<td>{{$key}}</td><td>{{$val}}</td>
+				</tr>
+			@endforeach
+		</table>
 	</div>
 @endforeach
