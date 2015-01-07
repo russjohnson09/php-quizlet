@@ -1,5 +1,18 @@
 @extends('layouts.master')
 
 @section('content')
-@include('layouts.recordslist', array('records'=>$shows,'controller' => 'ShowController'))
+	@foreach ($shows as $show)
+		<div class="Show">
+			<h1>{{ $show->title }}</h1>
+			<div class="episodes">
+			<ul>
+				@foreach ($show->episodes as $episode)
+				<li>
+					{{$episode->title}}
+				</li>
+				@endforeach
+			</ul>
+			</div>
+		</div>
+	@endforeach
 @stop

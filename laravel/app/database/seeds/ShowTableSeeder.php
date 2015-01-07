@@ -2,7 +2,7 @@
 
 use Faker\Factory as F;
 
-class EpisodeTableSeeder extends Seeder {
+class ShowTableSeeder extends Seeder {
 
 	const MAX = 10;
 	
@@ -17,7 +17,7 @@ class EpisodeTableSeeder extends Seeder {
 				'title' => $f->name,
 				'description' => $f->name
 			));
-			for ($i=0;$i<self::MAX;$i++) {
+			for ($j=0;$j<self::MAX;$j++) {
 				$episode = Episode::create(array(
 					'title' => $f->name,
 					'description' => $f->name,
