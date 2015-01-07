@@ -10,3 +10,5 @@ setx path "%path%;C:\Python27"
 
 
 URLWriter for iis -> public/index.php
+
+controller:make ShowController
