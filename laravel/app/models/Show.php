@@ -7,4 +7,9 @@ class Show extends Eloquent {
         return $this->hasMany('Episode');
     }
 	
+	public function genres()
+    {
+        return $this->belongsToMany('Genre');
+    }
+
 }
