@@ -26,16 +26,12 @@ Route::get('/quizlet',function(){
 	$tokenUrl = $_ENV['quizlet_token_url'];
 	if (!Input::has('code') && !Input::has('error')) {
 		Session::set('state', md5(mt_rand().microtime(true))); // CSRF protection
-		echo Session::get('state');
-		print_r($authorizeUrl);
-		//echo $myUrl;
-		return;
 		echo '<a href="'.$authorizeUrl.'&state='.Session::get('state').'&redirect_uri='.$myUrl.'">Step 1: Start Authorization</a>';
 		return;
 	}
 	 
 	// Check for issues from step 1:
-	if (empty(Input::has('error'))) { // An error occurred authorizing
+	if (Input::has('error')) { // An error occurred authorizing
 		displayError(Input::all());
 		return;
 	}
@@ -53,6 +49,7 @@ Route::get('/quizlet',function(){
 		);
 		$curl = curl_init($tokenUrl);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); //todo
 		curl_setopt($curl, CURLOPT_USERPWD, "{$myClientId}:{$mySecret}");
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $payload);
@@ -61,8 +58,9 @@ Route::get('/quizlet',function(){
 		curl_close($curl);
 	 
 		if ($responseCode != 200) { // An error occurred getting the token
+			//print_r($responseCode);
 			displayError($token, 2);
-			exit();
+			return;
 		}
 	 
 		$accessToken = $token['access_token'];
@@ -78,9 +76,10 @@ Route::get('/quizlet',function(){
 	 
 	// Step 3: Use the Quizlet API with the received token
 	// ===================================================
-	echo "<p>Step 3 completed - Authorized as {$_SESSION['username']}.</p>";
-	$curl = curl_init("https://api.quizlet.com/2.0/users/{$_SESSION['username']}/sets");
-	curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$_SESSION['access_token']));
+	echo "<p>Step 3 completed - Authorized as ".Session::get('username').".</p>";
+	$curl = curl_init("https://api.quizlet.com/2.0/users/".Session::get('username')."/sets");
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); //todo
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.Session::get('access_token')));
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	$data = json_decode(curl_exec($curl));
 	$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -98,10 +97,6 @@ Route::get('/quizlet',function(){
 		echo "<li>".htmlspecialchars($set->title)."</li>"; // Notice that we ensure HTML is displayed safely
 	}
 	echo "</ol>";
-	
-	//Session::put('key', 'value');
-	
-	//$value = Session::get('key');
 	
 });
 
