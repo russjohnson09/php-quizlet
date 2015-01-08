@@ -1,11 +1,6 @@
-<!-- Stored in app/views/layouts/master.blade.php -->
-<!doctype html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>{{$title}}</title>
-</head>
-    <body>
+@extends('layouts.master')
+
+@section('content')
 		{{link_to_action('CardController@create','Add')}}
 		@if (count($cards) > 0)
 			<div class="cards">
@@ -27,5 +22,4 @@
 			@endforeach
 			</div>
 		@endif
-    </body>
-</html>
+@stop

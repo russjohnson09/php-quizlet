@@ -14,7 +14,9 @@ class CreateQuizletUser extends Migration {
 	{
 		Schema::create('quizlet_users',function($t){
 			$t->increments('id')->unsigned();
-			$t->
+			$t->string('username')->unique();
+			$t->string('access_token');
+			$t->timestamps();
 		});
 	}
 
@@ -25,7 +27,7 @@ class CreateQuizletUser extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('quizlet_users');
 	}
 
 }

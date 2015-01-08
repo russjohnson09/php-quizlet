@@ -17,16 +17,27 @@ Route::get('/',function()
 	return View::make('info');
 });
 
+Route::get('/flush',function(){
+	Session::flush();
+});
+
+Route::group(array('prefix' => 'quizlet','before' => 'quizletAuth'), function() {
+	Route::get('user',array('as' => 'quizlet.user', 'uses' => 'QuizletApiController@showProfile'));
+});
+
 
 //Route::get('/quizlet',array('as' => 'quizlet.index','uses' => 'QuizletApiController@index'));
 
 Route::get('/quizlet',function(){
+	if (Session::has('quizletUserId')) {
+		return Redirect::action('CardController@index');
+	}
 	$myClientId = $_ENV['quizlet_client_id'];
 	$mySecret = $_ENV['quizlet_secret'];
 	$myUrl = $_ENV['quizlet_redirect_url'];
 	$authorizeUrl = $_ENV['quizlet_authorize_url'];
 	$tokenUrl = $_ENV['quizlet_token_url'];
-	if (!Input::has('code') && !Input::has('error')) {
+	if (!Input::has('code')) {
 		Session::set('state', md5(mt_rand().microtime(true))); // CSRF protection
 		echo '<a href="'.$authorizeUrl.'&state='.Session::get('state').'&redirect_uri='.$myUrl.'">Step 1: Start Authorization</a>';
 		return;
@@ -59,22 +70,21 @@ Route::get('/quizlet',function(){
 		$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close($curl);
 	 
-		if ($responseCode != 200) { // An error occurred getting the token
-			//print_r($responseCode);
-			displayError($token, 2);
-			return;
-		}
-	 
 		$accessToken = $token['access_token'];
 		$username = $token['user_id']; // the API sends back the username of the user in the access token
 	 
-		// Store the token for later use (outside of this example, you might use a real database)
-		// You must treat the "access token" like a password and store it securely
-		Session::put('access_token',$accessToken);
-		Session::put('username',$username);
-	 
-		echo "<p>Step 2 completed - access token was received.</p>";
+		$qu = QuizletUser::where('username',$username)->first();
+		if (empty($qu)) {
+			$qu = new QuizletUser();
+			$qu->username = $username;
+		}
+		$qu->access_token = $accessToken;
+		$qu->save();
+		
+		Session::set('quizletUserId',$qu->id);
 	}
+	
+	return Redirect::action('CardController@index');
 	 
 	// Step 3: Use the Quizlet API with the received token
 	// ===================================================
@@ -86,12 +96,7 @@ Route::get('/quizlet',function(){
 	$data = json_decode(curl_exec($curl));
 	$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 	curl_close($curl);
-	 
-	if (floor($responseCode / 100) != 2) { // A non 200-level code is an error (our API typically responds with 200 and 204 on success)
-		displayError((array) $data, 3);
-		return;
-	}
-	 
+	
 	// Display the user's sets
 	echo "<p>Found ".count($data)." sets</p>";
 	echo "<ol>";

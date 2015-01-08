@@ -6,6 +6,11 @@
 </head>
     <body>
         @section('sidebar')
+		<div>
+			<?php $quizletUser = QuizletUser::find(Session::get('quizletUserId')); ?>
+			{{$quizletUser}}
+			1
+		</div>
         @show
         <div class="container">
 			@yield('content')

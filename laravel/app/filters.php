@@ -51,7 +51,7 @@ Route::filter('auth', function()
 Route::filter('quizletAuth',function()
 {
 	if (!Session::has('quizletUserId')) {
-		return Response::make('Unauthorized', 401);
+		return Redirect::to('/quizlet');
 	}
 });
 
