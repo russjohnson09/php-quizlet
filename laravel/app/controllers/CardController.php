@@ -101,7 +101,7 @@ class CardController extends \BaseController {
             //    ->withInput(Input::except('password'));
         } else {
             // store
-            $card->front       = Input::get('front');
+            $card->front = Input::get('front');
             $card->save();
 
             // redirect
@@ -124,24 +124,29 @@ class CardController extends \BaseController {
 	
 	public function review($card)
 	{
-		if(Input::get('correct')) {
-			$review = CardReview::where('card_id',$card->id)->orderBy('created_at','desc')->first();
-			if (empty($review)) {
-				$due_date = Carbon::now()->addDay(2);
+		$review = new CardReview();
+		if(Input::has('correct')) {
+			$review->correct = true;
+			$pastReview = CardReview::where('card_id',$card->id)->orderBy('created_at','desc')->first();
+			if (empty($pastReview)) {
+				$due_date = Carbon::now()->addDays(2);
 			}
 			else {
-				$due_date = Carbon::now()->addDay()->max(
-				Carbon::now()->addMinutes((Carbon::now()->diffInMinutes($review->created_at)) * 2));
+				$min = Carbon::now()->addDays(2);
+				$due2 = Carbon::now()
+						->addMinutes(
+							($pastReview->created_at->diffInMinutes(Carbon::now())) * 2
+						);
+				$due_date = $min->max($due2);
 			}
 		}
 		else {
+			$review->correct = false;
 			$due_date = Carbon::now()->addDay();
 		}
 		
-		$review = new CardReview();
 		$review->due_date = $due_date;
 		$review->card_id = $card->id;
-		$review->correct = false;
 		$review->save();
 	
 		
