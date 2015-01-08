@@ -1,8 +1,10 @@
 <?php
 Route::model('card', 'Card');
-Route::resource('card','CardController');
-
-Route::post('card/{card}/review',array('as' => 'card.review','uses' => 'CardController@review'));
+Route::group(array('before' => 'quizletAuth'), function() {
+	Route::resource('card','CardController');
+	Route::post('card/{card}/review',array('as' => 'card.review',
+	'uses' => 'CardController@review'));
+	});
 
 Route::model('show', 'Show');
 Route::resource('show','ShowController');
@@ -87,7 +89,7 @@ Route::get('/quizlet',function(){
 	 
 	if (floor($responseCode / 100) != 2) { // A non 200-level code is an error (our API typically responds with 200 and 204 on success)
 		displayError((array) $data, 3);
-		exit();
+		return;
 	}
 	 
 	// Display the user's sets
