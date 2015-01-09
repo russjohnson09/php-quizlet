@@ -26,13 +26,13 @@ class QuizletApiController extends \BaseController {
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$qu->access_token));
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$data = json_decode(curl_exec($curl));
+		return curl_exec($curl);
 		//return curl_exec($curl);
-		$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		curl_close($curl);
+		//$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		//curl_close($curl);
 		
 		//print_r($data);
-		return;
+		//return;
 		
 		// Display the user's sets
 		echo "<p>Found ".count($data)." sets</p>";
@@ -41,5 +41,10 @@ class QuizletApiController extends \BaseController {
 			echo "<li>".htmlspecialchars($set->title)."</li>"; // Notice that we ensure HTML is displayed safely
 		}
 		echo "</ol>";
+	}
+	
+	public function apiRequest()
+	{
+		return Request::path();
 	}
 }
