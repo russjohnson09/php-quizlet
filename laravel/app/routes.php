@@ -28,9 +28,7 @@ Route::group(array('prefix' => 'quizlet','before' => 'quizletAuth'), function() 
 });
 
 Route::group(array('prefix' => 'api','before' => 'quizletAuth'),function(){
-	Route::get('{path?}',function() {
-		return 1;
-	});
+	Route::get('{path?}/{path1?}/{path2?}/{path3?}/{path4?}','QuizletApiController@apiRequest');
 });
 
 Route::get('quizlet/(.*)','QuizletApiController@apiRequest');

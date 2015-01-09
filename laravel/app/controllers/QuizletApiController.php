@@ -45,6 +45,26 @@ class QuizletApiController extends \BaseController {
 	
 	public function apiRequest()
 	{
-		return Request::path();
+		$endpoint = substr(Request::path(),4);
+		//return $endpoint;
+		//return Request::path();
+		$qu = QuizletUser::find(Session::get('quizletUserId'));
+		$curl = curl_init("{$this->quizlet_url}{$endpoint}");
+		
+		switch(Request::method()) {
+			case 'post':
+				curl_setopt($curl, CURLOPT_POST, true);
+				break;
+			case 'delete':
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+			case 'put':
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+			default:
+				break;
+		}
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer '.$qu->access_token));
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		return curl_exec($curl);
 	}
 }
