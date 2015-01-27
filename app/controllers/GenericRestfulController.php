@@ -1,21 +1,22 @@
 <?php
 
 
-class PostController extends GenericRestfulController {
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+abstract class GenericRestfulController extends \BaseController {
+	
+	protected $dir = 'genericrestful';
+	protected $tbl;
+	
 	public function index()
 	{
-		return View::make('post.index',array('posts'=>
+		if (!isset($tbl)) {
+			return '';
+		}
+		return View::make($dir.'.index',array('posts'=>
 				Post::orderBy('created_at','desc')
 				->get()));
 	}
-
-
+	
+	
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -23,10 +24,10 @@ class PostController extends GenericRestfulController {
 	 */
 	public function create()
 	{
-		
+	
 	}
-
-
+	
+	
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -36,8 +37,8 @@ class PostController extends GenericRestfulController {
 	{
 		//
 	}
-
-
+	
+	
 	/**
 	 * Display the specified resource.
 	 *
@@ -48,8 +49,8 @@ class PostController extends GenericRestfulController {
 	{
 		//
 	}
-
-
+	
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -60,8 +61,8 @@ class PostController extends GenericRestfulController {
 	{
 		//
 	}
-
-
+	
+	
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -72,8 +73,8 @@ class PostController extends GenericRestfulController {
 	{
 		//
 	}
-
-
+	
+	
 	/**
 	 * Remove the specified resource from storage.
 	 *
@@ -84,6 +85,7 @@ class PostController extends GenericRestfulController {
 	{
 		//
 	}
-
-
-}
+	
+	
+	}
+	

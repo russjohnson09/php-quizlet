@@ -16,6 +16,7 @@ class CreatePost extends Migration {
 			$t->increments('id')->unsigned();
 			$t->string('title');
 			$t->text('body');
+			$t->timestamps();
 		});
 	}
 
