@@ -40,6 +40,13 @@ Route::filter('auth', function()
 	}
 });
 
+Route::filter('newsAuth',function()
+{
+	if (!Session::has('userId')) {
+		return Redirect::to('/admin/login');
+	}
+});
+
 Route::filter('quizletAuth',function()
 {
 	if (!Session::has('quizletUserId')) {

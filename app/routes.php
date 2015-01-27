@@ -41,6 +41,11 @@ Route::get('/admin/login','AdminController@login');
 Route::post('/admin/login','AdminController@login');
 
 Route::group(array('prefix' => '/admin','before' => 'auth'), function(){
-	Route::get('news','NewsController@index');
+	//Route::get('news','NewsController@index');
 	Route::get('','AdminController@index');
+});
+
+Route::group(array('before'=>'newsAuth'), function() {
+	Route::model('post', 'Post');
+	Route::resource('post','PostController');
 });
