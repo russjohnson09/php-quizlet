@@ -32,7 +32,7 @@ return array(
 			'main' => array(
 				'driver'    => 'mysql',
 				'host'      => '127.0.0.1:3307',
-				'database'  => 'prod',
+				'database'  => 'quizlet_prod',
 				'username'  => 'root',
 				'password'  => $_ENV['dbpass'],
 				'charset'   => 'utf8',
