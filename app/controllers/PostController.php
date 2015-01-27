@@ -3,17 +3,21 @@
 
 class PostController extends GenericRestfulController {
 
+	protected $controller = 'PostController';
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
+	/*
 	public function index()
 	{
+		
 		return View::make('post.index',array('posts'=>
 				Post::orderBy('created_at','desc')
 				->get()));
 	}
+	*/
 
 
 	/**
@@ -83,6 +87,12 @@ class PostController extends GenericRestfulController {
 	public function destroy($id)
 	{
 		//
+	}
+	
+	protected function getRecords()
+	{
+		return Post::orderBy('created_at','desc')
+				->get();
 	}
 
 

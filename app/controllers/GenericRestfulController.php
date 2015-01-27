@@ -5,15 +5,15 @@ abstract class GenericRestfulController extends \BaseController {
 	
 	protected $dir = 'genericrestful';
 	protected $tbl;
+	protected $controller;
 	
 	public function index()
 	{
-		if (!isset($tbl)) {
-			return '';
-		}
-		return View::make($dir.'.index',array('posts'=>
-				Post::orderBy('created_at','desc')
-				->get()));
+		//if (!isset($tbl)) {
+		//	return '';
+		//}
+		return View::make($this->dir.'.index',array('records'=>
+				$this->getRecords(),'controller' => $this->controller));
 	}
 	
 	
@@ -85,6 +85,8 @@ abstract class GenericRestfulController extends \BaseController {
 	{
 		//
 	}
+	
+	abstract protected function getRecords();
 	
 	
 	}
