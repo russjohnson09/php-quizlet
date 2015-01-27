@@ -15,6 +15,7 @@ class CreateUser extends Migration {
 		Schema::create('users',function($t){
 			$t->increments('id')->unsigned();
 			$t->string('username')->unique();
+			$t->string('password');
 			$t->integer('quizlet_user_id')->unsigned()->nullable();
 			$t->foreign('quizlet_user_id')->references('id')
 			->on('quizlet_users');

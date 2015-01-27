@@ -3,6 +3,6 @@
 	{{Form::text('username')}}
 	{{Form::label('password','Password')}}
 	{{Form::password('password')}}
-	{{Form::submit('Login')}}
+	<button type="submit" name="login" value="1">Login</button>
+	<button type="submit" name="create" value="1">Create Account</button>
 {{Form::close()}}
-<a href="/admin/signup">Sign-up</a>

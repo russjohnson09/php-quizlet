@@ -38,6 +38,7 @@ Route::get('quizlet/(.*)','QuizletApiController@apiRequest');
 
 Route::get('/quizlet','QuizletController@index');
 Route::get('/admin/login','AdminController@login');
+Route::post('/admin/login','AdminController@login');
 
 Route::group(array('prefix' => '/admin','before' => 'auth'), function(){
 	Route::get('news','NewsController@index');
