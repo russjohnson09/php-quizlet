@@ -36,12 +36,14 @@ class AdminController extends BaseController {
 				}
 				else {
 					if (password_verify(Input::get('password'),$user->password)) {
+						Session::set('userId',$user->id);
 						return $user;
 					}
 					return View::make('admin.login');
 				}
 			}
 		}
+		Session::flush();
 		return View::make('admin.login');
 	}
 

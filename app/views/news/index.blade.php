@@ -1,5 +1,5 @@
 
-@extends('layouts.master')
+@extends('layouts.main')
 
 @section('content')
 		News content.
