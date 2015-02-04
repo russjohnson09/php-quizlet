@@ -26,7 +26,8 @@
 		"phpunit/phpunit": "~4.4",
 		"mockery/mockery": "0.9.*",
 		"fzaninotto/faker": "~1.4",
-		"cartalyst/sentry": "~2.1"
+		"cartalyst/sentry": "~2.1",
+		"guzzlehttp/guzzle": "~4.0"
 	},
 	"autoload": {
 		"classmap": [
