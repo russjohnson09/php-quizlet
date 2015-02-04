@@ -15,6 +15,16 @@ Route::resource('episode','EpisodeController');
 
 Route::get('/',function()
 {
+	$email = 'russjohnson09@gamil.com';
+	$name = 'Russ';
+	$subject = 'welcome';
+	Mail::send('emails.welcome',array('name' => $name),function($message)
+	{
+		$subject = 'welcome';
+		$email = 'russjohnson09@gamil.com';
+		$name = 'Russ';
+		$message->to($email,$name)->subject($subject);
+	});
 	return View::make('info');
 });
 
