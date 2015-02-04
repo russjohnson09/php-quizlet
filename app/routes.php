@@ -15,7 +15,7 @@ Route::resource('episode','EpisodeController');
 
 Route::get('/',function()
 {
-	$email = 'russjohnson09@gamil.com';
+	$email = 'russjohnson09@gmail.com';
 	$name = 'Russ';
 	$subject = 'welcome';
 	Mail::send('emails.welcome',array('name' => $name),function($message)
@@ -23,6 +23,7 @@ Route::get('/',function()
 		$subject = 'welcome';
 		$email = 'russjohnson09@gamil.com';
 		$name = 'Russ';
+		$message->from('noreply@localhost', 'Do Not Reply');
 		$message->to($email,$name)->subject($subject);
 	});
 	return View::make('info');
