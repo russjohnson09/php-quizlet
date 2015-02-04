@@ -27,7 +27,8 @@
 		"mockery/mockery": "0.9.*",
 		"fzaninotto/faker": "~1.4",
 		"cartalyst/sentry": "~2.1",
-		"guzzlehttp/guzzle": "~4.0"
+		"guzzlehttp/guzzle": "~4.0",
+		"cartalyst/sentry-social": "2.1.*"
 	},
 	"autoload": {
 		"classmap": [
