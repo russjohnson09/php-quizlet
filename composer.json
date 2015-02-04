@@ -4,12 +4,29 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"type": "project",
+		"repositories": [
+        {
+      "type": "package",
+      "package": {
+        "name": "google/google-api-php-client",
+        "version": "0.6.7",
+        "dist": {
+          "url": "http://google-api-php-client.googlecode.com/files/google-api-php-client-0.6.7.tar.gz",
+          "type": "tar"
+        },
+        "autoload": {
+          "classmap": ["src/"]
+        }
+      }
+    }
+    ],
 	"require": {
 		"laravel/framework": "4.2.*",
 		"zizaco/confide": "~4.1",
 		"phpunit/phpunit": "~4.4",
 		"mockery/mockery": "0.9.*",
-		"fzaninotto/faker": "~1.4"
+		"fzaninotto/faker": "~1.4",
+		"cartalyst/sentry": "~2.1"
 	},
 	"autoload": {
 		"classmap": [
