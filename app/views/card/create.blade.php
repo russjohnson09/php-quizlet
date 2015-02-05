@@ -5,11 +5,9 @@
 	<title>{{$title}}</title>
 </head>
     <body>
-		{{Form::open(array('action' => array('CardController@store')))}}
-			{{Form::label('front', 'Front')}}
-			{{Form::text('front')}}
-			<input type="submit" value="Save">
-		</form>
-		{{Form::close()}}
+    {{Form::model($card,
+    array('route' => array('card.update', $card->id)))}}
+    
+    {{Form::close()}}
     </body>
 </html>

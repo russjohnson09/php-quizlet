@@ -25,5 +25,12 @@ class User extends Eloquent {
 	{
 		$this->attributes['password'] = password_hash($v,PASSWORD_DEFAULT);
 	}
+	
+
+	public function isAuthentic($password)
+	{
+		$password2 = $this->password;
+		return password_verify($password,$password2);
+	}
 
 }

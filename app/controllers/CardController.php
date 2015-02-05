@@ -27,6 +27,7 @@ class CardController extends \BaseController {
 	 */
 	public function create()
 	{
+		$this->data['card'] = new Card();
 		return View::make('card.create',$this->data);
 	}
 

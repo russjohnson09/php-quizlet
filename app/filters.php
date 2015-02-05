@@ -35,8 +35,8 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (!Session::has('userId')) {
-		return Redirect::to('/admin/login');
+	if (!Session::has('user')) {
+		return Redirect::to('/login');
 	}
 });
 

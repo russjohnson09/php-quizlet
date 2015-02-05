@@ -16,7 +16,6 @@ class Card extends Eloquent {
 			return true;
 		}
 		return $pastReview->due_date->isPast();
-		//return $pastReview->due_date->lt(Carbon::now());
 	}
 
 }

@@ -1,5 +1,34 @@
 <?php
 
+Route::model('user','User');
+
+Route::get('/',array('before'=>'auth',function()
+{
+	$user = Session::get('user');
+	return Redirect::to("user/{$user}");
+	return View::make('main');
+}));
+
+Route::get('/user/{user}',function($user){
+	return View::make('main',array('user'=>$user));
+});
+
+Route::post('/authenticate',
+array('uses'=>'MainController@authenticate'));
+Route::get('/login',array('uses'=>'MainController@login'));
+
+Route::get('/flush',function(){
+	Session::flush();
+	return Redirect::to('/');
+});
+
+return;
+Route::get('/{path}',function($path){
+	return App::make('MainController')->$path();
+	return View::make($path);
+});
+
+return;
 Route::model('card', 'Card');
 Route::group(array('before' => 'quizletAuth'), function() {
 	Route::resource('card','CardController');
@@ -15,20 +44,7 @@ Route::resource('episode','EpisodeController');
 
 Route::get('/',function()
 {
-	$name = 'Russ';
-	Mail::send('emails.welcome',array('name' => $name),function($message)
-	{
-		$subject = 'welcome';
-		$email = 'russjohnson09@gmail.com';
-		$name = 'Russ';
-		$message->from('noreply@localhost', 'Do Not Reply');
-		$message->to($email,$name)->subject($subject);
-	});
 	return View::make('info');
-});
-
-Route::get('/flush',function(){
-	Session::flush();
 });
 
 Route::group(array('prefix' => 'quizlet','before' => 'quizletAuth'), function() {
