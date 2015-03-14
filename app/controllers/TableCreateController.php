@@ -4,11 +4,15 @@ class TableCreateController extends BaseController {
 	
 	public function index()
 	{		
-		return View::make('table.create', array('tables' => $this->getTables()));
+		$errorMsg = '';
+		return View::make('table.create', array('tables' => $this->getTables(),
+				'errorMsg' => $errorMsg
+		));
 	}
 	
 	public function create()
 	{
+		$errorMsg = '';
 		$rules = array(
 				'tableName' => 'required|alpha_num',
 		);
@@ -21,36 +25,53 @@ class TableCreateController extends BaseController {
 		
 		$tableName = Input::get('tableName');
 		
+		if (Input::has('Drop')) {
+			$action = 'Drop';
+			$errorMsg = $this->dropTable($tableName);
+		}
+		elseif (Input::has('Create')) {
+			$action = 'Create';
+			$errorMsg = $this->createTable($tableName);
+		}
+							
+		return View::make('table.create',array('tableName' => $tableName,
+				'tables' => $this->getTables(),
+				'errorMsg' => $errorMsg
+		));
+	}
+	
+	private function createTable($tableName)
+	{
+		$errorMsg = '';
 		$pdo = DB::connection()->getPdo();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		
-		$stmt = $pdo->prepare("CREATE TABLE `{$tableName}` (
-								id INT,
-							    PRIMARY KEY (id)
-							);");
-		
 		try {
+			$stmt = $pdo->prepare("CREATE TABLE `{$tableName}` (
+			id INT,
+			PRIMARY KEY (id)
+			);");
 			$stmt->execute();
 		}
 		catch (Exception $e) {
-			echo $e->getMessage();
+			$errorMsg = $e->getMessage();
 		}
-		
-		//echo print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
-		//echo print_r($pdo->errorInfo());
-		//$stmt->execute();
-		
-		//echo $pdo->getAttribute(PDO::ATTR_SERVER_INFO);
-		
-		//$stmt = $pdo->prepare('SELECT DATABASE();');
-		//$stmt->execute();
-		
-		//echo print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
-		
-				
-		return View::make('table.create',array('tableName' => $tableName,
-				'tables' => $this->getTables()
-		));
+		return $errorMsg;
+	}
+	
+	private function dropTable($tableName)
+	{
+		$errorMsg = '';
+		$pdo = DB::connection()->getPdo();
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);		
+		try {
+			$stmt = $pdo->prepare("DROP TABLE `{$tableName}`;");
+			$stmt->execute();
+		}
+		catch (Exception $e) {
+			$errorMsg = $e->getMessage();
+		}
+		return $errorMsg;
 	}
 	
 	private function getTables()
