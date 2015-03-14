@@ -2,12 +2,26 @@
 
 class TableCreateController extends BaseController {
 	
+	protected $defaults = array('tableName' => '');
+	
 	public function index()
 	{		
+		$tableName = Input::get('editTable');
+		$rules = array(
+				'tableName' => 'alpha_num',
+		);
+		$validator = Validator::make(Input::all(), $rules);
+		if ($validator->fails()) {
+			App::abort(404);
+		}
+		$validator = Validator::make(Input::all(), $rules);
 		$errorMsg = '';
-		return View::make('table.create', array('tables' => $this->getTables(),
-				'errorMsg' => $errorMsg
-		));
+		return View::make('table.create', 
+				array_merge($this->defaults,
+				array('tables' => $this->getTables($tableName),
+				'errorMsg' => $errorMsg,
+				'editTable' => $tableName,
+		)));
 	}
 	
 	public function create()
@@ -33,11 +47,15 @@ class TableCreateController extends BaseController {
 			$action = 'Create';
 			$errorMsg = $this->createTable($tableName);
 		}
+		elseif (Input::has('Add Integer')) {
+			
+		}
 							
-		return View::make('table.create',array('tableName' => $tableName,
+		return View::make('table.create',array_merge($this->defaults,
+				array('tableName' => $tableName,
 				'tables' => $this->getTables(),
 				'errorMsg' => $errorMsg
-		));
+		)));
 	}
 	
 	private function createTable($tableName)
@@ -74,7 +92,7 @@ class TableCreateController extends BaseController {
 		return $errorMsg;
 	}
 	
-	private function getTables()
+	private function getTables($editTable)
 	{
 		$pdo = DB::connection()->getPdo();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -88,9 +106,26 @@ class TableCreateController extends BaseController {
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		foreach($result as $t) {
 			foreach($t as $key => $val) {
-				$tables[] = $val;
+				$tables[$val] = array('name' => $val);
+			}
+			if ($val == $editTable) {
+				$tables[$val]['columns'] = $this->getColumns($val);
 			}
 		}
 		return $tables;
+	}
+	
+	private function getColumns($table)
+	{
+		$pdo = DB::connection()->getPdo();
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		$stmt = $pdo->prepare("DESCRIBE `{$table}`");
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		return $result;
 	}
 }
