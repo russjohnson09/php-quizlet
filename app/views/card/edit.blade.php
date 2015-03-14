@@ -17,7 +17,7 @@
 			<button type="submit">Incorrect</button>
 		{{Form::close()}}
 		
-		@foreach($card->reviews as $rev)
+		@foreach($errors->reviews as $rev)
 			{{$rev}}
 		@endforeach
     </body>

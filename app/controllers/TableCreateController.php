@@ -3,8 +3,8 @@
 class TableCreateController extends BaseController {
 	
 	public function index()
-	{
-		return View::make('table.create');
+	{		
+		return View::make('table.create', array('tables' => $this->getTables()));
 	}
 	
 	public function create()
@@ -28,7 +28,13 @@ class TableCreateController extends BaseController {
 								id INT,
 							    PRIMARY KEY (id)
 							);");
-		$stmt->execute();
+		
+		try {
+			$stmt->execute();
+		}
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
 		
 		//echo print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
 		//echo print_r($pdo->errorInfo());
@@ -42,6 +48,28 @@ class TableCreateController extends BaseController {
 		//echo print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
 		
 				
-		return View::make('table.create',array(''));
+		return View::make('table.create',array('tableName' => $tableName,
+				'tables' => $this->getTables()
+		));
+	}
+	
+	private function getTables()
+	{
+		$pdo = DB::connection()->getPdo();
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		$stmt = $pdo->prepare('SHOW TABLES');
+		
+		$stmt->execute();
+		
+		$tables = array();
+		
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		foreach($result as $t) {
+			foreach($t as $key => $val) {
+				$tables[] = $val;
+			}
+		}
+		return $tables;
 	}
 }
