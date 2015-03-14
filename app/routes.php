@@ -2,6 +2,12 @@
 
 Route::model('user','User');
 
+Route::get('/tables/create',
+array('as' => 'tables.create', 'uses' => 'TableCreateController@index'));
+
+Route::post('/tables/create',array('as' => 
+'tables.post', 'uses' => 'TableCreateController@create'));
+
 Route::get('/',array('before'=>'auth',function()
 {
 	$user = Session::get('user');
